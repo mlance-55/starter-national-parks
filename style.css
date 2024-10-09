@@ -61,6 +61,10 @@ main {
   padding: 4px;
   flex: 1;
 }
+.header-statement {
+  color: #ffffff;
+  font-size: 1.2rem;
+}
 
 .stats {
   display: flex;
