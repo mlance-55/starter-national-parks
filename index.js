@@ -96,3 +96,12 @@ const park = document.querySelector(".park-display");
 //--removing the selected park
 main.removeChild(park);
 */
+
+
+
+//ADDING EVENT LISTENER TO A BUTTON
+
+const firstBtn = document.querySelector("button");
+firstBtn.addEventListener("click", (event) => {
+  console.log("You clicked the button", event)
+})
