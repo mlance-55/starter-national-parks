@@ -1,107 +1,111 @@
-/*console.log(document);
-const heading = document.querySelector("h1");
-console.log(heading);
+// const firstBtn = document.querySelector("button");
 
-const value = document.querySelector(".value");
-console.log(value);
+// firstBtn.addEventListener("click", function (event) {
+//   console.log(event.target.parentNode);
+// });
 
-const button = document.querySelector("button");
-console.log(button);
+// function to handler favorite button clicks
+const favoriteButtonClickHandler = (event) => {
+  const park = event.target.parentNode;
+  park.style.backgroundColor = "#c8e6c9";
+};
 
-const area = document.querySelector(".area");
-console.log(area);
-
-const descendant = document.querySelector(".stat > div");
-console.log(descendant);
-
-const greet = document.querySelector(".hello");
-console.log(greet);
-
-const buttons = document.querySelectorAll("button");
-console.log(buttons);*/
-
-
-
-//USING QUERYSELECTORALL TO SELECT NODE LISTS + ITERATE
-
-/*const heading3List = document.querySelectorAll("h3");
-for (let element of heading3List.values()) {
-    console.log(element);
+// function for sorting by name
+const sortByName = (parkA, parkB) => {
+  const parkAName = parkA.querySelector("h2").innerText;
+  const parkBName = parkB.querySelector("h2").innerText;
+  if (parkAName < parkBName) {
+    return -1;
+  } else if (parkAName > parkBName) {
+    return 1;
+  } else {
+    return 0;
   }
-for (let i = 0; i < heading3List.length; i++) {
-    const element = heading3List[i];
-    console.log(element);
-}*/
+};
 
+// function for sorting by rating
+const sortByRating = (parkA, parkB) => {
+  const parkARating = parseFloat(
+    parkA.querySelector(".rating-display > .value").innerText
+  );
+  const parkBRating = parseFloat(
+    parkB.querySelector(".rating-display > .value").innerText
+  );
+  return parkBRating - parkARating;
+};
 
+// function for handling the nameSorter click
+const nameSorterClickHandler = (event) => {
+  event.preventDefault();
 
-//MODIFYING AN ELEMENT
+  // 1.  get the main element
+  const main = document.querySelector("main");
 
-const descriptions = document.querySelectorAll(".description-display");
+  // 2. get the list of parks
+  const parksList = main.querySelectorAll(".park-display");
 
-for (let desc of descriptions.values()){
-  let content = desc.innerText;
-  
-  if (content.length > 250){
-    content = content.slice(0, 250);
-    content = content + '<a href="#">...</a>';
-  }
-  desc.innerHTML = content;
-}
+  // 3. empty the main
+  main.innerHTML = "";
 
+  // 4. create an array
+  const parksArray = Array.from(parksList);
 
+  // 5. sort the array
+  parksArray.sort(sortByName);
 
-//CHANGING STYLE OF AN ELEMENT
+  // 6. Insert each park into the DOM
+  parksArray.forEach((park) => {
+    main.appendChild(park);
+  });
+};
 
-//selecting all ratings
-const ratings = document.querySelectorAll(".rating-display .value");
+// function to handle the ratingSorter click
+const ratingSorterClickHandler = (event) => {
+  event.preventDefault();
 
+  // 1.  get the main element
+  const main = document.querySelector("main");
 
-for (let rating of ratings){
-  let ratingValue = parseFloat(rating.innerText);
+  // 2. get the list of parks
+  const parksList = main.querySelectorAll(".park-display");
 
-  if (ratingValue > 4.7){
-    rating.style.fontWeight = "bold";
-    rating.style.color = "#3ba17c";
-  }
-}
+  // 3. empty the main
+  main.innerHTML = "";
 
+  // 4. create an array
+  const parksArray = Array.from(parksList);
 
+  // 5. sort the array
+  parksArray.sort(sortByRating);
 
-//CREATING A NEW DOM ELEMENT
+  // 6. Insert each park into the DOM
+  parksArray.forEach((park) => {
+    main.appendChild(park);
+  });
+};
 
-const parks = document.querySelectorAll(".park-display");
-const numberParks = parks.length;
+// the point where all the code starts
+const main = () => {
+  // select the nameSorter link
+  const nameSorter = document.querySelector("#name-sorter");
 
-//--create new div element with dynamically updating text
-const newElement = document.createElement("div");
-newElement.innerText = `${numberParks} exciting parks to visit!`;
+  // add an event listener
+  nameSorter.addEventListener("click", nameSorterClickHandler);
 
-//--add styling to new element
-newElement.classList.add("header-statement");
+  // select the ratingSorter link
+  const ratingSorter = document.querySelector("#rating-sorter");
 
-//--add element to page
-const header = document.querySelector('header');
-header.appendChild(newElement);
+  // add an event listener
+  ratingSorter.addEventListener("click", ratingSorterClickHandler);
 
+  // select all the buttons for all the parks
+  const allBtns = document.querySelectorAll(".rate-button");
 
+  // iterate the list of buttons and add an event handler to each
+  allBtns.forEach((btn) => {
+    btn.addEventListener("click", favoriteButtonClickHandler);
+  });
+};
 
-//REMOVING DOM ELEMENTS (removing first park on the page)
-
-/*
-//--getting parent element of all parks
-const main = document.querySelector("main");
-//--selecting a single park
-const park = document.querySelector(".park-display");
-//--removing the selected park
-main.removeChild(park);
-*/
-
-
-
-//ADDING EVENT LISTENER TO A BUTTON
-
-const firstBtn = document.querySelector("button");
-firstBtn.addEventListener("click", (event) => {
-  console.log("You clicked the button", event)
-})
+// Add event listener for DOMContentLoaded
+window.addEventListener("DOMContentLoaded", main);
